@@ -35,7 +35,10 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     /*================ 8 ================*/
     address private s_recentWinner;
     /*================ 9 ================*/
-    RaffleState private s_raffelState;
+    RaffleState private s_raffleState;
+    /*================ 10 ================*/
+    uint256 private s_lastTimeStamp;
+    uint256 private immutable i_interval;
 
     /*======================================== Events ========================================*/
     /*================ 6 ================*/
@@ -51,7 +54,9 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         uint256 entranceFee,
         bytes32 gasLane,
         uint64 subscriptionID,
-        uint32 callbackGasLimit
+        uint32 callbackGasLimit,
+        /*================ 10 ================*/
+        uint256 interval
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
         //vrfCoordinator is address of the contract which does the random
         //number verifications
@@ -62,7 +67,10 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         i_gasLane = gasLane;
         i_subscriptionID = subscriptionID;
         i_callbackGasLimit = callbackGasLimit;
-        s_raffelState = RaffleState.OPEN;
+        s_raffleState = RaffleState.OPEN;
+        /*================ 10 ================*/
+        s_lastTimeStamp = block.timestamp;
+        i_interval = interval;
     }
 
     function enterRaffle() public payable {
@@ -72,7 +80,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
             revert Raffle_NotEnoughETHEntered();
         }
         /*================ 9 ================*/
-        if (s_raffelState != RaffleState.OPEN) {
+        if (s_raffleState != RaffleState.OPEN) {
             revert Raffle_NotOpen();
         }
         //for updating the variable s_players
@@ -89,7 +97,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         //once we get it, do something with it
         //this is a 2 transaction process, in order to avoid any malpractices
         /*================ 9 ================*/
-        s_raffelState = RaffleState.CALCULATING;
+        s_raffleState = RaffleState.CALCULATING;
         uint256 requestID = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionID,
@@ -110,10 +118,24 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
      * 4. Implicity, your subscription is funded with LINK.
      */
 
-    function checkUpkeep(bytes calldata /*checkData*/) external override {
+    function checkUpkeep(
+        bytes calldata /*checkData*/
+    )
+        external
+        override
+        returns (bool upkeepNeeded, bytes memory /*performData */)
+    {
         /*================ 9 ================*/
         //we use this function to check if it is time to get a random number
         //to update the recent winner and send them the funds
+        /*================ 10 ================*/
+        //the below bool is true if raffleState is in open state !!
+        bool isOpen = (RaffleState.OPEN == s_raffleState);
+        //to get how much time is passed, we do [block.timestamp - last block's timestamp] > interval
+        bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
+        bool hasPlayers = (s_players.length > 0);
+        bool hasBalance = address(this).balance > 0;
+        upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
     }
 
     function fulfillRandomWords(
@@ -125,6 +147,8 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
+        s_raffleState = RaffleState.OPEN;
+        s_players = new address payable[](0);
         (bool success, ) = recentWinner.call{value: address(this).balance}("");
         if (!success) {
             revert Raffle_TransferFailed();
