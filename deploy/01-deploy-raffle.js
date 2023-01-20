@@ -1,11 +1,15 @@
 const { network, ethers } = require("hardhat");
-const { developmentChains } = require("../helpers-hardhat-config");
+const {
+  developmentChains,
+  networkConfig,
+} = require("../helpers-hardhat-config");
 
 /*++++++++++++++++++++++++++++++++ 1 ++++++++++++++++++++++++++++++++*/
 module.exports = async function ({ getNamedAccounts, deployments }) {
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   /*++++++++++++++++++++++++++++++++ 2 ++++++++++++++++++++++++++++++++*/
+  const chainID = network.config.chainId;
   let vrfCoordinatorV2Address;
 
   /*++++++++++++++++++++++++++++++++ 2 ++++++++++++++++++++++++++++++++*/
@@ -14,6 +18,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
       "VRFCoordinatorV2Mock"
     );
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address;
+  } else {
+    vrfCoordinatorV2Address = networkConfig[chainID];
   }
 
   const raffle = await deploy("Raffle", {
