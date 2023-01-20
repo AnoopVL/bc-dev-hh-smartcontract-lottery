@@ -28,4 +28,6 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   }
 };
 
+// deploy function continued
+
 module.exports.tags = ["all", "mocks"];
