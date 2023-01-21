@@ -39,7 +39,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     /*================ 7 ================*/
     VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
     bytes32 private immutable i_gasLane;
-    uint64 private immutable i_subscriptionID;
+    uint64 private immutable i_subscriptionId;
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private immutable i_callbackGasLimit;
     uint32 private constant NUM_WORDS = 1;
@@ -64,7 +64,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         address vrfCoordinatorV2,
         uint256 entranceFee,
         bytes32 gasLane,
-        uint64 subscriptionID,
+        uint64 subscriptionId,
         uint32 callbackGasLimit,
         /*================ 10 ================*/
         uint256 interval
@@ -76,7 +76,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         /*================ 7 ================*/
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_gasLane = gasLane;
-        i_subscriptionID = subscriptionID;
+        i_subscriptionId = subscriptionId;
         i_callbackGasLimit = callbackGasLimit;
         s_raffleState = RaffleState.OPEN;
         /*================ 10 ================*/
@@ -112,7 +112,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     //         s_raffleState = RaffleState.CALCULATING;
     //         uint256 requestID = i_vrfCoordinator.requestRandomWords(
     //             i_gasLane,
-    //             i_subscriptionID,
+    //             i_subscriptionId,
     //             REQUEST_CONFIRMATIONS,
     //             i_callbackGasLimit,
     //             NUM_WORDS
@@ -164,7 +164,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         s_raffleState = RaffleState.CALCULATING;
         uint256 requestID = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
-            i_subscriptionID,
+            i_subscriptionId,
             REQUEST_CONFIRMATIONS,
             i_callbackGasLimit,
             NUM_WORDS
