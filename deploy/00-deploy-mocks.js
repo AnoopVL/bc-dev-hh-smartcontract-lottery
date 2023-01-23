@@ -14,7 +14,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = network.config.chainId;
-
+  //Error: ERROR processing /home/anoop/hh-fcc/hardhat-smartcontract-lottery/deploy/00-deploy-mocks.js:
+  //TypeError: Cannot read properties of undefined (reading 'includes')
   if (deploymentChains.includes(network.name)) {
     log("Local network detected !! Deploying mocks...");
     //now we have to deploy a mock vrfcoordinator...
