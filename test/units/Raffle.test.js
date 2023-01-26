@@ -1,4 +1,4 @@
-const { network, getNamedAccounts } = require("hardhat");
+const { network, getNamedAccounts, deployments } = require("hardhat");
 const { developmentChains } = require("../../helpers-hardhat-config");
 
 !developmentChains.includes(network.name)
@@ -7,5 +7,6 @@ const { developmentChains } = require("../../helpers-hardhat-config");
       let raffle, vrfCoordinatorV2Mock;
       beforeEach(async function () {
         const { deployer } = await getNamedAccounts();
+        await deployments.fixture(["all"]);
       });
     });
