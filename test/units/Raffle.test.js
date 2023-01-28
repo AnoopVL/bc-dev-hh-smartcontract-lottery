@@ -43,5 +43,10 @@ const {
           const playerFromContract = await raffle.getPlayer(0);
           assert.equal(playerFromContract, deployer);
         });
+        it("emmits events on enter", async function () {
+          await expect(
+            raffle.enterRaffle({ value: raffleEntranceFee })
+          ).to.emit(raffle, "RaffleEnter");
+        });
       });
     });
