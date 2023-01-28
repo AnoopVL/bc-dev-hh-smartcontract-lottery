@@ -11,7 +11,7 @@ const {
 !developmentChains.includes(network.name)
   ? describe.skip
   : describe("Raffle Unit Tests", async function () {
-      let raffle, vrfCoordinatorV2Mock, raffleEntranceFee, deployer;
+      let raffle, vrfCoordinatorV2Mock, raffleEntranceFee, deployer, interval;
       const chainId = networkConfig.chainId;
       beforeEach(async function () {
         deployer = (await getNamedAccounts()).deployer;
@@ -22,12 +22,14 @@ const {
           deployer
         );
         raffleEntranceFee = await raffle.getEntranceFee();
+        interval = await raffle.getInterval();
       });
       describe("constructor", async function () {
         it("Initailizes the raffle correctly", async function () {
           // Usually in our tests we have just 1 assert per "it" function
           const raffleState = await raffle.getRaffleState();
-          const interval = await raffle.getInterval();
+          //interval already declared in describe and beforeEach
+          //const interval = await raffle.getInterval();
           assert.equal(raffleState.toString(), "0");
           assert.equal(interval.toString(), networkConfig[chianId]["interval"]);
         });
@@ -47,6 +49,16 @@ const {
           await expect(
             raffle.enterRaffle({ value: raffleEntranceFee })
           ).to.emit(raffle, "RaffleEnter");
+        });
+        it("it doesnt allow entrance when raffle is caluculating !!", async function () {
+          await raffle.enterRaffle({ value: raffleEntranceFee });
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+          await network.provider.send("evm_mine", []);
+          await expect(
+            raffle.enterRaffle({ value: raffleEntranceFee })
+          ).to.be.revertedWith("raffle_NotOpen");
         });
       });
     });
