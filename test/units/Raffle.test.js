@@ -68,6 +68,9 @@ const {
           await network.provider.send("evm_increaseTime", [
             interval.toNumber() + 1,
           ]);
+          await network.provider.send("evm_mine", []);
+          const { upKeepNeeded } = await raffle.callStatic.checkUpKeep([]);
+          assert(!upKeepNeeded);
         });
       });
     });
