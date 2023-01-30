@@ -56,6 +56,7 @@ const {
             interval.toNumber() + 1,
           ]);
           await network.provider.send("evm_mine", []);
+          await raffle.performUpKeep([]);
           await expect(
             raffle.enterRaffle({ value: raffleEntranceFee })
           ).to.be.revertedWith("raffle_NotOpen");
