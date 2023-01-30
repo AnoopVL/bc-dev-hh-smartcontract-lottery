@@ -63,4 +63,11 @@ const {
         });
         ///continued
       });
+      describe("checkUpKeep", async function () {
+        it("returns false if people haven't sent any ETH", async function () {
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+        });
+      });
     });
