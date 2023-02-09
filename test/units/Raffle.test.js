@@ -72,7 +72,7 @@ const {
           const { upKeepNeeded } = await raffle.callStatic.checkUpKeep([]);
           assert(!upKeepNeeded);
         });
-        it("returns false if raffel is not open !!", async function () {
+        it("returns false if raffle is not open !!", async function () {
           await network.provider.send("evm_increaseTime", [
             interval.toNumber() + 1,
           ]);
