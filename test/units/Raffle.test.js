@@ -132,4 +132,21 @@ const {
           assert(raffleState.toString() == 1);
         });
       });
+      describe("fulfillRandomWords", function () {
+        beforeEach(async () => {
+          await raffle.enterRaffle({ value: raffleEntranceFee });
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+          await network.provider.request({ method: "evm_mine", params: [] });
+        });
+        it("can only be called after performupkeep", async () => {
+          await expect(
+            vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.address) // reverts if not fulfilled
+          ).to.be.revertedWith("nonexistent request");
+          await expect(
+            vrfCoordinatorV2Mock.fulfillRandomWords(1, raffle.address) // reverts if not fulfilled
+          ).to.be.revertedWith("nonexistent request");
+        });
+      });
     });
