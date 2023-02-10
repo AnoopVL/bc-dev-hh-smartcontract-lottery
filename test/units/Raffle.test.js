@@ -166,6 +166,7 @@ const {
           // performUpKeep (mock being chianlink keepers)
           //fulfillrandomWords(mock being chainlink VRF)
           //We will have to wait for fulfillRandomWords to be called
+          // yet to run
           await new Promise(async (resolve, reject) => {
             raffle.once("WinnerPicked", async () => {
               console.log("Found the event !!");
