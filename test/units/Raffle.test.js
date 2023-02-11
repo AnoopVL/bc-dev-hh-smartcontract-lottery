@@ -162,7 +162,7 @@ const {
               value: raffleEntranceFee,
             });
           }
-          const startingTimeStamp = await raffle.getLastTimeStamp();
+          const startingTimeStamp = await raffle.getLatestTimeStamp();
           // performUpKeep (mock being chianlink keepers)
           //fulfillrandomWords(mock being chainlink VRF)
           //We will have to wait for fulfillRandomWords to be called
@@ -172,13 +172,13 @@ const {
               console.log("Found the event !!");
               try {
                 console.log(recentWinner);
-                console.log(accounts[2]);
-                console.log(accounts[0]);
-                console.log(accounts[1]);
-                console.log(accounts[3]);
+                console.log(accounts[2].address);
+                console.log(accounts[0].address);
+                console.log(accounts[1].address);
+                console.log(accounts[3].address);
                 const recentWinner = await raffle.getRecentWinner();
                 const raffleState = await raffle.getRaffleState();
-                const endingTimeStamp = await raffle.getLastTimeStamp();
+                const endingTimeStamp = await raffle.getLatestTimeStamp();
                 const numPlayers = await raffle.getNumberOfPlayers();
                 assert.equal(numPlayers.toString(), "0");
                 assert.equal(raffleState.toString(), "0");
@@ -192,6 +192,7 @@ const {
             // below, we will fire the event, and the listener will pick it up, and resolve
             const tx = await raffle.performUpKeep([]);
             const txReceipt = await tx.wait(1);
+            // const winnerStartingBalance = await accounts[1].getBalance();
             await vrfCoordinatorV2Mock.fulfillRandomWords(
               txReceipt.events[1].args.requestId,
               raffle.address
