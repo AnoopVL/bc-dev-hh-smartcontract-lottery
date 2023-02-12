@@ -1,14 +1,14 @@
 /*++++++++++++++++++++++++++++++++ 1 ++++++++++++++++++++++++++++++++*/
-// const { deploymentChains } = require("../../helpers-hardhat-config");
-// const { developmentChains } = require("../helpers-hardhat-config");
-// const { network, ethers } = require("hardhat");
-// const {
-//   developmentChains,
-//   networkConfig,
-// } = require("../helpers-hardhat-config");
-// const { verify } = require("../helpers-hardhat-config");
+const { deploymentChains } = require("../../helpers-hardhat-config");
+const { developmentChains } = require("../helpers-hardhat-config");
+const { network, ethers } = require("hardhat");
+const {
+  developmentChains,
+  networkConfig,
+} = require("../helpers-hardhat-config");
+const { verify } = require("../helpers-hardhat-config");
 
-const { network } = require("hardhat");
+//const { network } = require("hardhat");
 
 /*++++++++++++++++++++++++++++++++ 2 ++++++++++++++++++++++++++++++++*/
 //this is the premium(gas fee) needed to enter
