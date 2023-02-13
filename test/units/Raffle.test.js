@@ -183,6 +183,15 @@ const {
                 assert.equal(numPlayers.toString(), "0");
                 assert.equal(raffleState.toString(), "0");
                 assert(endingTimeStamp > startingTimeStamp);
+                //This means that winner should endup with all the money that everybody else added
+                assert.equal(
+                  winnerEndingBalance.toString(),
+                  winnerStartingBalance.add(
+                    raffleEntranceFee
+                      .mul(additionalEntrances)
+                      .add(raffleEntranceFee.toString())
+                  )
+                );
               } catch (e) {
                 reject(e);
               }
