@@ -6,7 +6,7 @@ const {
 const {
   developmentChains,
   networkConfig,
-} = require("../../helpers-hardhat-config");
+} = require("../../../helpers-hardhat-config");
 
 !developmentChains.includes(network.name)
   ? describe.skip
@@ -189,7 +189,8 @@ const {
                   winnerStartingBalance.add(
                     raffleEntranceFee
                       .mul(additionalEntrances)
-                      .add(raffleEntranceFee.toString())
+                      .add(raffleEntranceFee)
+                      .toString()
                   )
                 );
               } catch (e) {
