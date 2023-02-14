@@ -11,6 +11,7 @@ const {
 !developmentChains.includes(network.name)
   ? describe.skip
   : describe("Raffle Unit Tests", function () {
+      //describe("Raffle Unit Tests", function () {
       let raffle, vrfCoordinatorV2Mock, raffleEntranceFee, deployer, interval;
       const chainId = networkConfig.chainId;
       beforeEach(async function () {
