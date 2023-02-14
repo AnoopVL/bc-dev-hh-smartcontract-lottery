@@ -40,6 +40,8 @@ const {
                 reject(e);
               }
             });
+
+            await raffle.enterRaffle({ value: raffleEntranceFee });
           });
         });
       });
