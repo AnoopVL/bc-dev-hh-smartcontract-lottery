@@ -28,13 +28,27 @@ developmentChains.includes(network.name)
         it("works with live Chainlink Keepers and Chainlink VRF, we get random winner", async function () {
           // here we are trying to enter raffle
           const startingTimeStamp = await raffle.getLatestTimeStamp();
+          const accounts = await ethers.getSigners();
 
           await new Promise(async (resolve, reject) => {
             raffle.once("WinnerPicked", async () => {
               console.log("WinnerPicked event fired");
-              resolve();
+
               try {
-                //yet to add asserts in this section
+                const recentWinner = await raffle.getRecentWinner();
+                const raffleState = await raffle.getRaffleState();
+                const winnnerEndingBalance = await accounts[0].getBalance();
+                const endingTimeStamp = await raffle.getLatestTimeStamp();
+
+                await expect(raffle.getPlayer(0)).to.be.reverted;
+                assert.equal(recentWinner.toString(), accounts[0].address);
+                assert.equal(raffleState, 0);
+                assert.equal(
+                  winnerEndingBalance.toString(),
+                  winnerStartingBalance.add(raffleEntranceFee).toString()
+                );
+                assert(endingTimeStamp > startingTimeStamp);
+                resolve();
               } catch (error) {
                 console.log(error);
                 reject(e);
@@ -42,6 +56,8 @@ developmentChains.includes(network.name)
             });
 
             await raffle.enterRaffle({ value: raffleEntranceFee });
+
+            const winnerStartingBalance = await accounts[0].getBalance();
           });
         });
       });
