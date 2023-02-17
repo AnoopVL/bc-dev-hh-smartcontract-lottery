@@ -17,14 +17,17 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   /*++++++++++++++++++++++++++++++++ 2 ++++++++++++++++++++++++++++++++*/
 
   if (developmentChains.includes(network.name)) {
-    const VRFCoordinatorV2Mock = await ethers.getContract(
+    //const VRFCoordinatorV2Mock = await ethers.getContract(
+    const vrfCoordinatorV2Mock = await ethers.getContract(
       "VRFCoordinatorV2Mock"
     );
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address;
     /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
-    const transactionResponse = await VRFCoordinatorV2Mock.createSubscription();
+    const transactionResponse = await vrfCoordinatorV2Mock.createSubscription();
     const transactionReceipt = await transactionResponse.wait(1);
-    subscriptionId = transactionReceipt.event[0].args.subId;
+    ////----error at this line for 'yarn hh deploy'-------
+    // subscriptionId = transactionReceipt.event[0].args.subId;
+    subscriptionId = transactionReceipt.events[0].args.subId;
     //after we create the subscriptionId we have to fund it
     // on real network we would need the 'link token'
     // but on this mock we wont need the link token
@@ -44,15 +47,25 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   const args = [
     vrfCoordinatorV2Address,
     entranceFee,
+    gasLane,
     subscriptionId,
     callbackGasLimit,
     interval,
   ];
+
+  // const raffle = await deploy("Raffle", {
+  //   from: deployer,
+  //   //args: [],
+  //   args: arguments,
+  //   log: true,
+  //   waitConfirmations: network.config.blockConfirmation || 1,
+  // });
+
   const raffle = await deploy("Raffle", {
     from: deployer,
-    args: [],
+    args: args,
     log: true,
-    waitConfirmations: network.config.blockConfirmation || 1,
+    waitConfirmations: network.config.blockConfirmations || 1,
   });
 
   /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
