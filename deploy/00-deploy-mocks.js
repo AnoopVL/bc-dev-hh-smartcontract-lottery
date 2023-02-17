@@ -1,6 +1,6 @@
 /*++++++++++++++++++++++++++++++++ 1 ++++++++++++++++++++++++++++++++*/
-const { deploymentChains } = require("../../helpers-hardhat-config");
-const { developmentChains } = require("../helpers-hardhat-config");
+//const { deploymentChains } = require("../../helpers-hardhat-config");
+//const { developmentChains } = require("../helpers-hardhat-config");
 const { network, ethers } = require("hardhat");
 const {
   developmentChains,
@@ -26,7 +26,9 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   const chainId = network.name;
   //Error: ERROR processing /home/anoop/hh-fcc/hardhat-smartcontract-lottery/deploy/00-deploy-mocks.js:
   //TypeError: Cannot read properties of undefined (reading 'includes')
-  if (deploymentChains.includes(network.name)) {
+
+  //if (deploymentChains.includes(network.name)) {
+  if (developmentChains.includes(network.name)) {
     log("Local network detected !! Deploying mocks...");
     //now we have to deploy a mock vrfcoordinator...
     await deploy("VRFCoordinatorV2Mock", {
