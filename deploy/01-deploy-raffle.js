@@ -42,7 +42,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     subscriptionId = networkConfig[chainId]["subscriptionId"];
   }
   /*++++++++++++++++++++++++++++++++ 3 ++++++++++++++++++++++++++++++++*/
-  //const entranceFee = networkConfig[chainId]["entraceFee"];
+  //const entranceFee = networkConfig[chainId]["entraceFee"];-----entrance spelling
   const entranceFee = networkConfig[chainId]["entranceFee"];
   const gasLane = networkConfig[chainId]["gasLane"];
   const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"];
