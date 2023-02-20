@@ -78,7 +78,8 @@ const {
             "RaffleEnter"
           );
         });
-        // not running, to be checked later
+        // not running, to be checked later, still not working
+
         it("doesn't allow entrance when raffle is calculating", async () => {
           await raffle.enterRaffle({ value: raffleEntranceFee });
           // for a documentation of the methods below, go here: https://hardhat.org/hardhat-network/reference
