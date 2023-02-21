@@ -55,7 +55,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     /*================ 6 ================*/
     event RaffleEnter(address indexed player);
     /*================ 7 ================*/
-    event RequestedRaffleWinner(uint256 indexed requestID);
+    event RequestedRaffleWinner(uint256 indexed requestId);
     /*================ 8 ================*/
     event winnerPicked(address indexed winner);
 
@@ -110,14 +110,14 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     //         //this is a 2 transaction process, in order to avoid any malpractices
     //         /*================ 9 ================*/
     //         s_raffleState = RaffleState.CALCULATING;
-    //         uint256 requestID = i_vrfCoordinator.requestRandomWords(
+    //         uint256 requestId = i_vrfCoordinator.requestRandomWords(
     //             i_gasLane,
     //             i_subscriptionId,
     //             REQUEST_CONFIRMATIONS,
     //             i_callbackGasLimit,
     //             NUM_WORDS
     //         );
-    //         emit RequestedRaffleWinner(requestID);
+    //         emit RequestedRaffleWinner(requestId);
     //     }
 
     /**
@@ -162,7 +162,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
             );
         }
         s_raffleState = RaffleState.CALCULATING;
-        uint256 requestID = i_vrfCoordinator.requestRandomWords(
+        uint256 requestId = i_vrfCoordinator.requestRandomWords(
             // uint256 requestId = i_vrfCoordinator.requestRandomWords
             i_gasLane,
             i_subscriptionId,
@@ -170,7 +170,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
             i_callbackGasLimit,
             NUM_WORDS
         );
-        emit RequestedRaffleWinner(requestID);
+        emit RequestedRaffleWinner(requestId);
     }
 
     function fulfillRandomWords(

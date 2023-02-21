@@ -103,7 +103,7 @@ const {
         //     interval.toNumber() + 1,
         //   ]);
         //   await network.provider.send("evm_mine", []);
-        //   await raffle.performUpKeep([]);
+        //   await raffle.performUpkeep([]);
         //   await expect(
         //     raffle.enterRaffle({ value: raffleEntranceFee })
         //   ).to.be.revertedWith("raffle_NotOpen");
@@ -194,7 +194,7 @@ const {
           ]);
           await network.provider.request({ method: "evm_mine", params: [] });
         });
-        it("can only be called after performupkeep", async () => {
+        it("can only be called after performUpkeep", async () => {
           await expect(
             vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.address) // reverts if not fulfilled
           ).to.be.revertedWith("nonexistent request");
@@ -333,7 +333,7 @@ const {
 //             interval.toNumber() + 1,
 //           ]);
 //           await network.provider.send("evm_mine", []);
-//           await raffle.performUpKeep([]);
+//           await raffle.performUpkeep([]);
 //           await expect(
 //             raffle.enterRaffle({ value: raffleEntranceFee })
 //           ).to.be.revertedWith("raffle_NotOpen");
@@ -354,10 +354,10 @@ const {
 //             interval.toNumber() + 1,
 //           ]);
 //           await network.provider.send("evm_mine", []);
-//           await raffle.performUpKeep("0x");
+//           await raffle.performUpkeep("0x");
 //           const { upKeepNeeded } = await raffle.callStatic.checkUpKeep([]);
 //           assert.equal(raffleState.toString(), "1");
-//           assert.equal(performUpKeep, false);
+//           assert.equal(performUpkeep, false);
 //         });
 //         //.....copied from github repo....
 //         it("returns false if enough time hasn't passed", async () => {
@@ -380,14 +380,14 @@ const {
 //           //....copied from github repo.... ^^^^
 //         });
 //       });
-//       describe("performUpKeep", function () {
+//       describe("performUpkeep", function () {
 //         // it("This runs only if checkupkeep is true", async function () {
 //         //   await raffle.enterRaffle({ value: raffleEntranceFee });
 //         //   await network.provider.send("evm_increaseTime", [
 //         //     interval.toNumber() + 1,
 //         //   ]);
 //         //   await network.provider.send("evm_mine", []);
-//         //   const tx = await raffle.performUpKeep([]);
+//         //   const tx = await raffle.performUpkeep([]);
 //         //   assert(tx);
 //         // });
 //         it("can only run if checkupkeep is true", async () => {
@@ -400,7 +400,7 @@ const {
 //           assert(tx);
 //         });
 //         it("reverts when checkupkeep is false", async function () {
-//           await expect(raffle.performUpKeep([])).to.be.revertedWith(
+//           await expect(raffle.performUpkeep([])).to.be.revertedWith(
 //             "Raffle_UpkeepNotNeeded"
 //           );
 //         });
@@ -410,7 +410,7 @@ const {
 //             interval.toNumber() + 1,
 //           ]);
 //           await network.provider.send("evm_mine", []);
-//           const txResponse = await raffle.performUpKeep([]);
+//           const txResponse = await raffle.performUpkeep([]);
 //           const txReceipt = await txResponse.wait(1);
 //           const requestId = txReceipt.events(1).args.requestId;
 //           const raffleState = await raffle.getRaffleState();
@@ -426,7 +426,7 @@ const {
 //           ]);
 //           await network.provider.request({ method: "evm_mine", params: [] });
 //         });
-//         it("can only be called after performupkeep", async () => {
+//         it("can only be called after performUpkeep", async () => {
 //           await expect(
 //             vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.address) // reverts if not fulfilled
 //           ).to.be.revertedWith("nonexistent request");
@@ -449,7 +449,7 @@ const {
 //             });
 //           }
 //           const startingTimeStamp = await raffle.getLatestTimeStamp();
-//           // performUpKeep (mock being chianlink keepers)
+//           // performUpkeep (mock being chianlink keepers)
 //           //fulfillrandomWords(mock being chainlink VRF)
 //           //We will have to wait for fulfillRandomWords to be called
 //           // yet to run
@@ -486,7 +486,7 @@ const {
 //             });
 //             //setting up the listener
 //             // below, we will fire the event, and the listener will pick it up, and resolve
-//             const tx = await raffle.performUpKeep([]);
+//             const tx = await raffle.performUpkeep([]);
 //             const txReceipt = await tx.wait(1);
 //             // const winnerStartingBalance = await accounts[1].getBalance();
 //             await vrfCoordinatorV2Mock.fulfillRandomWords(
