@@ -64,20 +64,21 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   //   interval,
   // ];
 
-  // const raffle = await deploy("Raffle", {
-  //   from: deployer,
-  //   //args: [],
-  //   args: arguments,
-  //   log: true,
-  //   waitConfirmations: network.config.blockConfirmation || 1,
-  // });
-
   const raffle = await deploy("Raffle", {
     from: deployer,
     args: args,
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+
+  //Below block copied from github discussion
+  // const raffle = await deploy("Raffle", {
+  //   from: deployer,
+  //   args: args,
+  //   log: true,
+  //   //waitConfirmations: waitBlockConfirmations,
+  // });
+  // await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
 
   /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
   if (

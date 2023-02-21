@@ -47,6 +47,7 @@ module.exports = {
     },
   },
   mocha: {
-    timeout: 300000,
+    // timeout: 300000, 5 minutes is a long wait
+    timeout: 150000,
   },
 };

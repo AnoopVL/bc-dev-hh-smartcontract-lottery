@@ -79,7 +79,6 @@ const {
           );
         });
         // not running, to be checked later, still not working
-
         it("doesn't allow entrance when raffle is calculating", async () => {
           await raffle.enterRaffle({ value: raffleEntranceFee });
           // for a documentation of the methods below, go here: https://hardhat.org/hardhat-network/reference
@@ -87,17 +86,31 @@ const {
             interval.toNumber() + 1,
           ]);
           await network.provider.request({ method: "evm_mine", params: [] });
+          //await network.provider.request("evm_mine", []);
           // we pretend to be a keeper for a second
           await raffle.performUpkeep([]); // changes the state to calculating for our comparison below
           await expect(
             raffle.enterRaffle({ value: raffleEntranceFee })
           ).to.be.revertedWith(
             // is reverted as raffle is calculating
-            "Raffle__RaffleNotOpen"
+            //"Raffle__RaffleNotOpen"
+            "Raffle_NotOpen"
           );
         });
+        // it("doesn't allow entrance when raffle is calculating", async function () {
+        //   await raffle.enterRaffle({ value: raffleEntranceFee });
+        //   await network.provider.send("evm_increaseTime", [
+        //     interval.toNumber() + 1,
+        //   ]);
+        //   await network.provider.send("evm_mine", []);
+        //   await raffle.performUpKeep([]);
+        //   await expect(
+        //     raffle.enterRaffle({ value: raffleEntranceFee })
+        //   ).to.be.revertedWith("raffle_NotOpen");
+        // });
       });
       describe("checkUpkeep", function () {
+        // running
         it("returns false if people haven't sent any ETH", async () => {
           await network.provider.send("evm_increaseTime", [
             interval.toNumber() + 1,
@@ -106,6 +119,7 @@ const {
           const { upkeepNeeded } = await raffle.callStatic.checkUpkeep("0x"); // upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers)
           assert(!upkeepNeeded);
         });
+        // not running
         it("returns false if raffle isn't open", async () => {
           await raffle.enterRaffle({ value: raffleEntranceFee });
           await network.provider.send("evm_increaseTime", [
@@ -117,6 +131,7 @@ const {
           const { upkeepNeeded } = await raffle.callStatic.checkUpkeep("0x"); // upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers)
           assert.equal(raffleState.toString() == "1", upkeepNeeded == false);
         });
+        // running
         it("returns false if enough time hasn't passed", async () => {
           await raffle.enterRaffle({ value: raffleEntranceFee });
           await network.provider.send("evm_increaseTime", [
@@ -126,6 +141,7 @@ const {
           const { upkeepNeeded } = await raffle.callStatic.checkUpkeep("0x"); // upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers)
           assert(!upkeepNeeded);
         });
+        // running
         it("returns true if enough time has passed, has players, eth, and is open", async () => {
           await raffle.enterRaffle({ value: raffleEntranceFee });
           await network.provider.send("evm_increaseTime", [
@@ -138,6 +154,7 @@ const {
       });
 
       describe("performUpkeep", function () {
+        // not running
         it("can only run if checkupkeep is true", async () => {
           await raffle.enterRaffle({ value: raffleEntranceFee });
           await network.provider.send("evm_increaseTime", [
@@ -147,11 +164,13 @@ const {
           const tx = await raffle.performUpkeep("0x");
           assert(tx);
         });
+        // running
         it("reverts if checkup is false", async () => {
           await expect(raffle.performUpkeep("0x")).to.be.revertedWith(
-            "Raffle__UpkeepNotNeeded"
+            "Raffle_UpkeepNotNeeded"
           );
         });
+        // not running
         it("updates the raffle state and emits a requestId", async () => {
           // Too many asserts in this test!
           await raffle.enterRaffle({ value: raffleEntranceFee });
