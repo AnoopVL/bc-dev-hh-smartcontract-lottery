@@ -39,15 +39,26 @@ const {
 
       describe("constructor", function () {
         // not running, to be checked
-        it("initializes the raffle correctly", async () => {
-          // Ideally, we'd separate these out so that only 1 assert per "it" block
-          // And ideally, we'd make this check everything
-          const raffleState = (await raffle.getRaffleState()).toString();
-          // Comparisons for Raffle initialization:
-          assert.equal(raffleState, "0");
+        // it("initializes the raffle correctly", async () => {
+        //   // Ideally, we'd separate these out so that only 1 assert per "it" block
+        //   // And ideally, we'd make this check everything
+        //   const raffleState = (await raffle.getRaffleState()).toString();
+        //   // Comparisons for Raffle initialization:
+        //   assert.equal(raffleState, "0");
+        //   assert.equal(
+        //     interval.toString(),
+        //     networkConfig[network.config.chainId]["keepersUpdateInterval"]
+        //   );
+        // });
+        it("initializes the raffle correctly", async function () {
+          // Usually in our tests we have just 1 assert per "it" function
+          const raffleState = await raffle.getRaffleState();
+          //interval already declared in describe and beforeEach
+          //const interval = await raffle.getInterval();
+          assert.equal(raffleState.toString(), "0");
           assert.equal(
             interval.toString(),
-            networkConfig[network.config.chainId]["keepersUpdateInterval"]
+            networkConfig[network.config.chainId]["interval"]
           );
         });
       });
