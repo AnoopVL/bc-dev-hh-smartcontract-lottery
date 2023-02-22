@@ -151,9 +151,31 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return (upkeepNeeded, "0x0");
     }
 
+    // function performUpkeep(bytes calldata /* performData */) external override {
+    //     /*================ 11 ================*/
+    //     (bool upkeepNeeded, ) = checkUpkeep("");
+    //     if (!upkeepNeeded) {
+    //         revert Raffle_UpkeepNotNeeded(
+    //             address(this).balance,
+    //             s_players.length,
+    //             uint256(s_raffleState)
+    //         );
+    //     }
+    //     s_raffleState = RaffleState.CALCULATING;
+    //     uint256 requestId = i_vrfCoordinator.requestRandomWords(
+    //         // uint256 requestId = i_vrfCoordinator.requestRandomWords
+    //         i_gasLane,
+    //         i_subscriptionId,
+    //         REQUEST_CONFIRMATIONS,
+    //         i_callbackGasLimit,
+    //         NUM_WORDS
+    //     );
+    //     emit RequestedRaffleWinner(requestId);
+    // }
+    // above code is mine, the code below is from Patric's repo
     function performUpkeep(bytes calldata /* performData */) external override {
-        /*================ 11 ================*/
         (bool upkeepNeeded, ) = checkUpkeep("");
+        // require(upkeepNeeded, "Upkeep not needed");
         if (!upkeepNeeded) {
             revert Raffle_UpkeepNotNeeded(
                 address(this).balance,
@@ -163,13 +185,13 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         }
         s_raffleState = RaffleState.CALCULATING;
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
-            // uint256 requestId = i_vrfCoordinator.requestRandomWords
             i_gasLane,
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
             i_callbackGasLimit,
             NUM_WORDS
         );
+        // Quiz... is this redundant?
         emit RequestedRaffleWinner(requestId);
     }
 
