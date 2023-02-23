@@ -20,9 +20,10 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
   if (developmentChains.includes(network.name)) {
     //const VRFCoordinatorV2Mock = await ethers.getContract(
-    const vrfCoordinatorV2Mock = await ethers.getContract(
-      "VRFCoordinatorV2Mock"
-    );
+    // const vrfCoordinatorV2Mock = await ethers.getContract(
+    //   "VRFCoordinatorV2Mock"
+    // );
+    vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock");
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address;
     /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
     const transactionResponse = await vrfCoordinatorV2Mock.createSubscription();
@@ -70,6 +71,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+  await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
 
   //Below block copied from github discussion
   // const raffle = await deploy("Raffle", {
