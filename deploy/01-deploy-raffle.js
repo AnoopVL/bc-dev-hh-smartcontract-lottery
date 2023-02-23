@@ -56,14 +56,6 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     callbackGasLimit,
     interval,
   ];
-  // const args = [
-  //   vrfCoordinatorV2Address,
-  //   subscriptionId,
-  //   entranceFee,
-  //   gasLane,
-  //   callbackGasLimit,
-  //   interval,
-  // ];
 
   const raffle = await deploy("Raffle", {
     from: deployer,
