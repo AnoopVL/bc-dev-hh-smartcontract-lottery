@@ -63,16 +63,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+  //below line is copied from github discussion
   await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
-
-  //Below block copied from github discussion
-  // const raffle = await deploy("Raffle", {
-  //   from: deployer,
-  //   args: args,
-  //   log: true,
-  //   //waitConfirmations: waitBlockConfirmations,
-  // });
-  // await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
 
   /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
   if (
