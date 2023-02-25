@@ -63,8 +63,10 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
-  //below line is copied from github discussion
-  await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
+  // when we do yarn hh deploy --network goerli , we don't need the line below
+  // when we do yarn hh test , we need the line below
+  //  ++++++++++++++ await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
+  //above line is copied from github discussion
 
   /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
   if (
