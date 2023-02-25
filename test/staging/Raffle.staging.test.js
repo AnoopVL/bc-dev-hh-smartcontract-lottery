@@ -53,7 +53,9 @@ developmentChains.includes(network.name)
             });
 
             console.log("Entering Raffle...");
-            const tx = await raffle.enterRaffle({ value: raffleEntranceFee });
+            const tx = await raffle.enterRaffle({
+              value: raffleEntranceFee,
+            });
             await tx.wait(1);
             console.log("Ok, time to wait...");
             //await raffle.enterRaffle({ value: raffleEntranceFee });
