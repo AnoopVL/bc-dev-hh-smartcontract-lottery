@@ -31,6 +31,11 @@ module.exports = {
       blockConfirmations: 6,
     },
   },
+  etherscan: {
+    apiKey: {
+      goerli: ETHERSCAN_API_KEY,
+    },
+  },
   gasReporter: {
     enabled: false,
     currency: "USD",
