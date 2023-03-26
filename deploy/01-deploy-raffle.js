@@ -63,10 +63,19 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+  await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
   // when we do yarn hh deploy --network goerli , we don't need the line below
   // when we do yarn hh test , we need the line below
   //  ++++++++++++++ await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
-  //above line is copied from github discussion
+  //above line is copied from github discussion'
+
+  // if (developmentChains.includes(network.name)) {
+  //   const vrfCoordinatorV2Mock = await ethers.getContract(
+  //     "VRFCoordinatorV2Mock"
+  //   );
+  //   await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
+  // }
+  /**++++++++++++++++++++++++++++ above section copied from github ++++++++++++++++++++++++++++ */
 
   /*++++++++++++++++++++++++++++++++ 4 ++++++++++++++++++++++++++++++++*/
   if (
